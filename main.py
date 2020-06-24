@@ -15,9 +15,9 @@ get_parameters = {
     'x-algolia-api-key': '448c9e20c867b4a3f602687b5ec33890',
     'x-algolia-application-id': 'IGSYV1Z1XI'
 }
-limit = 5
+limit = 10
 limitFacets = 100
-totalCourse = 10
+totalCourse = 3000
 
 
 ##
@@ -60,7 +60,7 @@ def getCourse(pageIndex):
     response_contents = json.loads(response.content)['results'][0]['hits']
     index = 0
     for hit in response_contents:
-        soup = BeautifulSoup(hit['primary_description'] + hit['secondary_description'], "html.parser")
+        soup = BeautifulSoup(hit['primary_description'], "html.parser")
         result[index] = {
             'name': hit['title'],
             'date': hit['active_run_start'],
@@ -96,8 +96,6 @@ result = []
 while length < totalCourse:
     courses = getCourse(pageIndex)
     for course in courses.values():
-        detail = getDetailCourse(course['url'])
-        course.update(detail)
         result.append(course)
         length = length + 1
         clear()
