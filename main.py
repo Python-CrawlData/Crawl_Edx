@@ -1,3 +1,6 @@
+# !/usr/bin/python
+# coding=utf-8
+
 # if error, use pip to install beautisoup4
 from bs4 import BeautifulSoup
 import re
@@ -99,7 +102,7 @@ while length < totalCourse:
         result.append(course)
         length = length + 1
         clear()
-        print('Đã crawl', length, 'trong', totalCourse, 'khóa học!')
+        print('Đã crawl', length, 'trong', totalCourse, 'khóa học')
     pageIndex = pageIndex + 1
 
 
