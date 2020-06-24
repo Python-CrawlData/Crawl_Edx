@@ -73,6 +73,7 @@ def getCourse(pageIndex):
             'subjects': hit['subject'],
             'url': hit['marketing_url']
         }
+        index = index + 1
     return result
 
 
@@ -102,7 +103,7 @@ while length < totalCourse:
         result.append(course)
         length = length + 1
         clear()
-        print('Đã crawl', length, 'trong', totalCourse, 'khóa học')
+        print('Đã crawl', len(result), 'trong', totalCourse, 'khóa học')
     pageIndex = pageIndex + 1
 
 
