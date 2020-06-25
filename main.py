@@ -18,9 +18,9 @@ get_parameters = {
     'x-algolia-api-key': '448c9e20c867b4a3f602687b5ec33890',
     'x-algolia-application-id': 'IGSYV1Z1XI'
 }
-limit = 10
-limitFacets = 100
-totalCourse = 3000
+limit = 25
+limitFacets = 300
+totalCourse = 900
 
 
 ##
@@ -78,7 +78,7 @@ def getCourse(pageIndex):
 
 
 def getDetailCourse(url):
-    response = requests.get(url)
+    response = requests.get(url )
     if (400 == response.status_code):
         return 0
     soup = BeautifulSoup(response.content, "html.parser")
@@ -98,12 +98,15 @@ length = 0
 pageIndex = 1
 result = []
 while length < totalCourse:
-    courses = getCourse(pageIndex)
-    for course in courses.values():
+    courses = getCourse(pageIndex).values()
+    for course in courses:
+        # info = getDetailCourse(course['url']) # Mở lên nếu muốn crawl thêm, nhưng tốc độ chậm
+        # course.update(info)
         result.append(course)
         length = length + 1
         clear()
-        print('Đã crawl', len(result), 'trong', totalCourse, 'khóa học')
+        print('Đang crawl trang thứ', pageIndex)
+        print('Đã crawl', length, 'trong', totalCourse, 'khóa học')
     pageIndex = pageIndex + 1
 
 
