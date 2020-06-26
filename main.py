@@ -101,11 +101,11 @@ result = []
 levels = [
     {
         'name': 'Introductory',
-        'limit': 1800
+        'limit': 950
     },
     {
         'name': 'Intermediate',
-        'limit': 1000
+        'limit': 950
     },
     {
         'name': 'Advanced',
