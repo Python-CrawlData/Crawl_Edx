@@ -20,7 +20,7 @@ get_parameters = {
 }
 limit = 25
 limitFacets = 300
-totalCourse = 900
+totalCourse = 3000
 
 
 ##
@@ -56,7 +56,7 @@ def generatePostData(hitsPerPage=10, maxPerFacet=300, page=1, level=0):
 
 def getCourse(pageIndex, level):
     query = urllib.parse.urlencode(get_parameters)
-    raw_data = '{"requests":[' + json.dumps(generatePostData(hitsPerPage=limit, maxPerFacet=limitFacets, page=pageIndex)) + ']}'
+    raw_data = '{"requests":[' + json.dumps(generatePostData(hitsPerPage=limit, maxPerFacet=limitFacets, page=pageIndex, level=level)) + ']}'
     response = requests.post(url_course + '?' + query, data=raw_data)
     if (response.status_code == 400):
         print('Error 400!')
@@ -97,20 +97,38 @@ def getDetailCourse(url):
 # Execute code
 ##
 length = 0
-pageIndex = 1
 result = []
-level = 'Introductory'
-while length < totalCourse:
-    courses = getCourse(pageIndex, level).values()
-    for course in courses:
-        # info = getDetailCourse(course['url']) # Mở lên nếu muốn crawl thêm, nhưng tốc độ chậm
-        # course.update(info)
-        result.append(course)
-        length = length + 1
-        clear()
-        print('Đang crawl trang thứ', pageIndex)
-        print('Đã crawl', length, 'trong', totalCourse, 'khóa học')
-    pageIndex = pageIndex + 1
+levels = [
+    {
+        'name': 'Introductory',
+        'limit': 1800
+    },
+    {
+        'name': 'Intermediate',
+        'limit': 1000
+    },
+    {
+        'name': 'Advanced',
+        'limit': 400
+    }
+]
+for level in levels:
+    pageIndex = 1
+    index = 0
+    while index < level['limit']:
+        courses = getCourse(pageIndex, level['name']).values()
+        for course in courses:
+            clear()
+            print('Đang crawl ở mức level:', level['name'])
+            print('Đang crawl trang thứ', pageIndex)
+            print('Đã crawl', index, 'trong', level['limit'], 'khóa học của level:', level['name'])
+            print('Đã crawl tất cả', length, 'khóa học')
+            # info = getDetailCourse(course['url'])
+            # course.update(info)
+            result.append(course)
+            index = index + 1
+            length = length + 1
+        pageIndex = pageIndex + 1
 
 
 ##
