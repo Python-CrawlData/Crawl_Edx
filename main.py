@@ -33,7 +33,7 @@ def clear():
         _ = system('clear') 
 
 
-def generatePostData(hitsPerPage=10, maxPerFacet=300, page=1):
+def generatePostData(hitsPerPage=10, maxPerFacet=300, page=1, level=0):
     indexName = 'product'
     params = {
         'highlightPreTag': '<ais-highlight-0000000000>',
@@ -46,13 +46,15 @@ def generatePostData(hitsPerPage=10, maxPerFacet=300, page=1):
         'page': page,
         'tagFilters': ''
     }
+    if (0 != level):
+        params.update({'facetFilters': '[["level:'+ level +'"]]'})
     return {
         'indexName': indexName,
         'params': urllib.parse.urlencode(params)
     }
 
 
-def getCourse(pageIndex):
+def getCourse(pageIndex, level):
     query = urllib.parse.urlencode(get_parameters)
     raw_data = '{"requests":[' + json.dumps(generatePostData(hitsPerPage=limit, maxPerFacet=limitFacets, page=pageIndex)) + ']}'
     response = requests.post(url_course + '?' + query, data=raw_data)
@@ -97,8 +99,9 @@ def getDetailCourse(url):
 length = 0
 pageIndex = 1
 result = []
+level = 'Introductory'
 while length < totalCourse:
-    courses = getCourse(pageIndex).values()
+    courses = getCourse(pageIndex, level).values()
     for course in courses:
         # info = getDetailCourse(course['url']) # Mở lên nếu muốn crawl thêm, nhưng tốc độ chậm
         # course.update(info)
